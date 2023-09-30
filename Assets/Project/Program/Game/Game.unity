@@ -434,7 +434,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1153eaeb782534dbf2e2645abc3c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toppings:
+  _Toppings:
   - {fileID: 228795072774978215, guid: 1877c0058f9d5f844b830aa6183490b8, type: 3}
   - {fileID: 2270177827717488513, guid: cc533cb1d432f5e46be31ab7f71dd63c, type: 3}
 --- !u!1001 &466604882
@@ -558,7 +558,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1153eaeb782534dbf2e2645abc3c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toppings:
+  _Toppings:
   - {fileID: 2279647408293651678, guid: 077c5ec3ec785d04daff380f6a4706e0, type: 3}
 --- !u!1 &478425745
 GameObject:
@@ -749,7 +749,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1153eaeb782534dbf2e2645abc3c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toppings:
+  _Toppings:
   - {fileID: 4477458351371457690, guid: 6f7360684bc37cf45b1ed7a824350783, type: 3}
 --- !u!1001 &557084822
 PrefabInstance:
@@ -872,7 +872,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1153eaeb782534dbf2e2645abc3c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toppings:
+  _Toppings:
   - {fileID: 1633256048874488070, guid: c947b7dd2e208d14a8b3b8b67238f76a, type: 3}
 --- !u!1 &658292800
 GameObject:
@@ -1498,7 +1498,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f1153eaeb782534dbf2e2645abc3c3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  toppings:
+  _Toppings:
   - {fileID: 8889534105216439322, guid: 217355888daddbb44bffbdba7c878501, type: 3}
 --- !u!1001 &1124189662
 PrefabInstance:
@@ -1901,22 +1901,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6c6e5cc33ae7a24395209fd1038fb47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hamburger:
+  _Hamburger:
   - {fileID: 228795072774978215, guid: 1877c0058f9d5f844b830aa6183490b8, type: 3}
+  - {fileID: 2279647408293651678, guid: 077c5ec3ec785d04daff380f6a4706e0, type: 3}
   - {fileID: 8889534105216439322, guid: 217355888daddbb44bffbdba7c878501, type: 3}
-  - {fileID: 2279647408293651678, guid: 077c5ec3ec785d04daff380f6a4706e0, type: 3}
   - {fileID: 4477458351371457690, guid: 6f7360684bc37cf45b1ed7a824350783, type: 3}
   - {fileID: 2270177827717488513, guid: cc533cb1d432f5e46be31ab7f71dd63c, type: 3}
-  cheeseBurger:
+  _CheeseBurger:
   - {fileID: 228795072774978215, guid: 1877c0058f9d5f844b830aa6183490b8, type: 3}
-  - {fileID: 1633256048874488070, guid: c947b7dd2e208d14a8b3b8b67238f76a, type: 3}
   - {fileID: 2279647408293651678, guid: 077c5ec3ec785d04daff380f6a4706e0, type: 3}
+  - {fileID: 1633256048874488070, guid: c947b7dd2e208d14a8b3b8b67238f76a, type: 3}
   - {fileID: 4477458351371457690, guid: 6f7360684bc37cf45b1ed7a824350783, type: 3}
   - {fileID: 2270177827717488513, guid: cc533cb1d432f5e46be31ab7f71dd63c, type: 3}
-  tags:
-  - Hamburger
-  - Unhamburger
-  - Cheeseburger
 --- !u!1 &2049366391
 GameObject:
   m_ObjectHideFlags: 3

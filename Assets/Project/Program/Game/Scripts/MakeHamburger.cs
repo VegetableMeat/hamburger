@@ -1,11 +1,23 @@
 using System;
+using UnityEditor.UIElements;
 using UnityEngine;
 
 public class MakeHamburger : MonoBehaviour
 {
-	[SerializeField] GameObject[] hamburger;
-	[SerializeField] GameObject[] cheeseBurger;
-	[SerializeField] String[] tags;
+	[SerializeField] GameObject[] _Hamburger;
+	[SerializeField] GameObject[] _CheeseBurger;
+	string[] _Tags;
+	string _TagHamburger;
+	string _TagCheeseburger;
+	string _TagUnhamburger;
+
+	void Awake()
+	{
+		_TagHamburger = "Hamburger";
+		_TagCheeseburger = "Cheeseburger";
+		_TagUnhamburger = "Unhamburger";
+		_Tags = new string[] { _TagHamburger, _TagCheeseburger, _TagUnhamburger };
+	}
 
 	public void RemakeTheHamburger(bool isBurgerOntable, GameObject parentObj, GameObject childObj)
 	{
@@ -75,14 +87,13 @@ public class MakeHamburger : MonoBehaviour
 
 	bool CheckCompleteTag(GameObject parentObj)
 	{
-		int tagCount = tags.Length;
-
-		for (int i = 0; i < tagCount; i++) 
+		foreach (string tag in _Tags)
 		{
-			if (tags[i] != parentObj.tag) 
+			if (tag != parentObj.tag)
 			{
 				continue;
 			}
+
 			return true;
 		}
 
@@ -94,7 +105,7 @@ public class MakeHamburger : MonoBehaviour
 		int childCount = parentObj.transform.childCount;
 		Transform allChild = parentObj.transform;
 
-		if (hamburger.Length == childCount) 
+		if (_Hamburger.Length == childCount) 
 		{
 			int trueOrfalse = 0;
 
@@ -102,7 +113,7 @@ public class MakeHamburger : MonoBehaviour
 			{
 				for (int i = 0; i < childCount; i++) 
 				{
-					if (hamburger[i].name != child.gameObject.name) 
+					if (_Hamburger[i].name != child.gameObject.name) 
 					{
 						continue;
 					}
@@ -113,12 +124,12 @@ public class MakeHamburger : MonoBehaviour
 
 			if (trueOrfalse == childCount) 
 			{
-				parentObj.tag = "Hamburger";
+				parentObj.tag = _TagHamburger;
 				return;
 			}
 		}
 
-		if (cheeseBurger.Length == childCount) 
+		if (_CheeseBurger.Length == childCount) 
 		{
 			int trueOrfalse = 0;
 
@@ -126,7 +137,7 @@ public class MakeHamburger : MonoBehaviour
 			{
 				for (int i = 0; i < childCount; i++)
 				{
-					if (cheeseBurger[i].name != child.gameObject.name)
+					if (_CheeseBurger[i].name != child.gameObject.name)
 					{
 						continue;
 					}
@@ -137,11 +148,11 @@ public class MakeHamburger : MonoBehaviour
 
 			if (trueOrfalse == childCount)
 			{
-				parentObj.tag = "Cheeseburger";
+				parentObj.tag = _TagCheeseburger;
 				return;
 			}
 		}
 
-		parentObj.tag = "Unhamburger";
+		parentObj.tag = _TagUnhamburger;
 	}
 }

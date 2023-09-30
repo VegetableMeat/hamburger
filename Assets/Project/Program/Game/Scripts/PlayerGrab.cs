@@ -4,48 +4,60 @@ using UnityEngine.UIElements;
 
 public class PlayerGrab : MonoBehaviour
 {
-	[SerializeField] float maxDistance;
-	[SerializeField] LayerMask hitLayers;
-	GameObject mainCamera;
-	GameObject grabItem;
-	bool isClick;
-	RaycastHit hit;
+	[SerializeField, Tooltip("init: 5")] float _MaxDistance;
+	[SerializeField, Tooltip("init: Grab")] LayerMask _HitLayers;
+	GameObject _MainCamera;
+	GameObject _GrabItem;
+	RaycastHit _Hit;
 
 	void Awake()
 	{
-		mainCamera = Camera.main.gameObject;
-		grabItem = null;
-		isClick = false;
+		if (_MaxDistance <= 0)
+		{
+			_MaxDistance = 5.0f;
+		}
+
+		if (_HitLayers <= 0)
+		{
+			_HitLayers = 1 << LayerMask.NameToLayer("Grab");
+		}
+
+		_MainCamera = Camera.main.gameObject;
+		_GrabItem = null;
 	}
 
 	void Update()
 	{
-		Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, maxDistance);
+		Physics.Raycast(_MainCamera.transform.position, _MainCamera.transform.forward, out _Hit, _MaxDistance);
 
-		if (hit.collider != null && Input.GetMouseButtonDown(0) && 1 << hit.collider.gameObject.layer == hitLayers)
+		if (CheckClickGrabItem())
 		{
-			isClick = true;
-		}
-		else if (Input.GetMouseButtonUp(0))
-		{
-			isClick = false;
-		}
-
-		if (isClick)
-		{
-			if (grabItem == null)
+			if (_GrabItem == null)
 			{
-				grabItem = hit.collider.gameObject;
-				grabItem.GetComponent<GrabItem>().Touch(mainCamera, hit.point);
+				_GrabItem = _Hit.collider.gameObject;
+				_GrabItem.GetComponent<GrabItem>().Touch(_MainCamera, _Hit.point);
 			}
-			else if (grabItem.GetComponent<GrabItem>())
+			else if (_GrabItem.GetComponent<GrabItem>())
 			{
-				grabItem.GetComponent<GrabItem>().Hold();
+				_GrabItem.GetComponent<GrabItem>().Hold();
 			}
 
 			return;
 		}
 
-		grabItem = null;
+		_GrabItem = null;
+	}
+
+	bool CheckClickGrabItem()
+	{
+		if (_Hit.collider != null && Input.GetMouseButtonDown(0) && 1 << _Hit.collider.gameObject.layer == _HitLayers || _GrabItem)
+		{
+			if (Input.GetMouseButton(0))
+			{
+				return true;
+			}
+		}
+
+		return false;
 	}
 }

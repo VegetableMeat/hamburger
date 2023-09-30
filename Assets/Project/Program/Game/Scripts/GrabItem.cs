@@ -4,24 +4,24 @@ using UnityEngine;
 
 public class GrabItem : MonoBehaviour
 {
-	Rigidbody rb;
-	GameObject manipulator;
-	Vector3 hitPoint;
+	Rigidbody _Rb;
+	GameObject _Manipulator;
+	Vector3 _HitPoint;
 
 	void Awake()
 	{
-		rb = GetComponent<Rigidbody>();
+        _Rb = GetComponent<Rigidbody>();
 	}
 
 	public void Touch(GameObject camera, Vector3 hit) 
 	{
-		manipulator = camera;
-		hitPoint = transform.InverseTransformPoint(hit);
+        _Manipulator = camera;
+        _HitPoint = transform.InverseTransformPoint(hit);
 	}
 
 	public void Hold()
 	{
-		rb.velocity = (manipulator.transform.forward + manipulator.transform.position - transform.TransformPoint(hitPoint)) * 10.0f;
-		rb.rotation = Quaternion.Euler(0, manipulator.transform.localEulerAngles.y, 0);
+        _Rb.velocity = (_Manipulator.transform.forward + _Manipulator.transform.position - transform.TransformPoint(_HitPoint)) * 10.0f;
+        _Rb.rotation = Quaternion.Euler(0, _Manipulator.transform.localEulerAngles.y, 0);
 	}
 }

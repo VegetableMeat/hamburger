@@ -3,39 +3,39 @@ using UnityEngine;
 
 public class BunsRay : MonoBehaviour
 {
-	[SerializeField, TooltipAttribute("init: 0.05")] float maxDistance;
-	[SerializeField] LayerMask hitLayers;
-	bool isBurgerOntable;
-	RaycastHit hit;
+	[SerializeField, Tooltip("init: 0.05")] float _MaxDistance;
+	[SerializeField, Tooltip("init: Table")] LayerMask _HitLayers;
+	bool _IsBurgerOntable;
+	RaycastHit _Hit;
 
 	void Awake()
 	{
-		if (maxDistance <= 0)
+		if (_MaxDistance <= 0)
 		{
-			maxDistance = 0.05f;
+			_MaxDistance = 0.05f;
 		}
 
-		if (hitLayers <= 0)
+		if (_HitLayers <= 0)
 		{
-			hitLayers = 1 << LayerMask.NameToLayer("Table");
+			_HitLayers = 1 << LayerMask.NameToLayer("Table");
 		}
 	}
 
 	void Update()
 	{
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.05f, transform.position.z);
-		Physics.Raycast(rayPos, -transform.up, out hit, maxDistance);
+		Physics.Raycast(rayPos, -transform.up, out _Hit, _MaxDistance);
 
-		if (hit.collider != null && 1 << hit.collider.gameObject.layer == hitLayers)
+		if (_Hit.collider != null && 1 << _Hit.collider.gameObject.layer == _HitLayers)
 		{
-			isBurgerOntable = true;
+			_IsBurgerOntable = true;
 			return;
 		}
-		isBurgerOntable = false;
+		_IsBurgerOntable = false;
 	}
 
 	public bool GetBurgerState() 
 	{
-		return isBurgerOntable;
+		return _IsBurgerOntable;
 	}
 }

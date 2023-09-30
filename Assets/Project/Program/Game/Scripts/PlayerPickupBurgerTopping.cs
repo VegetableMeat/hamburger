@@ -6,34 +6,50 @@ using UnityEngine;
 
 public class PlayerPickupBurgerTopping : MonoBehaviour
 {
-	[SerializeField] float maxDistance;
-	[SerializeField] LayerMask hitLayers;
-	GameObject mainCamera;
-	GameObject viewBox;
-	RaycastHit hit;
+	[SerializeField, Tooltip("init: 5")] float _MaxDistance;
+	[SerializeField, Tooltip("init: Box")] LayerMask _HitLayers;
+	GameObject _MainCamera;
+	GameObject _ViewBox;
+	RaycastHit _Hit;
 
 	void Awake()
 	{
-		mainCamera = Camera.main.gameObject;
-		viewBox = null;
+		if (_MaxDistance <= 0)
+		{
+			_MaxDistance = 5.0f;
+		}
+
+		if (_HitLayers <= 0)
+		{
+			_HitLayers = 1 << LayerMask.NameToLayer("Box");
+		}
+
+		_MainCamera = Camera.main.gameObject;
+		_ViewBox = null;
 	}
 
 	void Update()
 	{
-		Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, maxDistance);
+		Physics.Raycast(_MainCamera.transform.position, _MainCamera.transform.forward, out _Hit, _MaxDistance);
 
-		if (hit.collider != null && 1 << hit.collider.gameObject.layer == hitLayers && Input.GetMouseButtonDown(0))
+		if (CheckClickBurgerToppingBox())
 		{
-			if (viewBox == null) 
+			if (_ViewBox == null) 
 			{
-				viewBox = hit.collider.gameObject;
+				_ViewBox = _Hit.collider.gameObject;
 			}
 
-			viewBox.GetComponent<BurgerToppingBox>().SpawnToppingFromBox(viewBox);
+			_ViewBox.GetComponent<BurgerToppingBox>().SpawnToppingFromBox(_ViewBox);
 
 			return;
 		}
 
-		viewBox = null;
+		_ViewBox = null;
+	}
+
+	bool CheckClickBurgerToppingBox()
+	{
+		return _Hit.collider != null && Input.GetMouseButtonDown(0) && 1 << _Hit.collider.gameObject.layer == _HitLayers;
+
 	}
 }
