@@ -43,7 +43,6 @@ public class MakeHamburger : MonoBehaviour
 	public void AddChildElement(GameObject parentObj, GameObject childObj, Vector3 childPos)
 	{
 		childObj.layer = LayerMask.NameToLayer("Default");
-		//childObj.transform.parent = parentObj.transform;
 		childObj.transform.parent = parentObj.transform.root;
 		childObj.transform.position = childPos;
 		childObj.transform.rotation = parentObj.transform.rotation;

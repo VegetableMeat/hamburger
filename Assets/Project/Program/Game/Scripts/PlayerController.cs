@@ -41,8 +41,8 @@ public class PlayerController : MonoBehaviour
 		float totalSpeed = moveSpeed * Time.deltaTime;
 		totalSpeed *= Input.GetButton("Fire3") ? dashSpeed : 1.0f;
 
-        // WASDでプレイヤーを進ませる、カメラの向いている方向に進む
-        moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
+		// WASDでプレイヤーを進ませる、カメラの向いている方向に進む
+		moveDirection = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical"));
 		moveDirection.Normalize();
 		rb.velocity = transform.TransformDirection(moveDirection) * totalSpeed;
 	}

@@ -22,7 +22,7 @@ public class BunsRay : MonoBehaviour
 	}
 
 	void Update()
-    {
+	{
 		Vector3 rayPos = new Vector3(transform.position.x, transform.position.y + 0.05f, transform.position.z);
 		Physics.Raycast(rayPos, -transform.up, out hit, maxDistance);
 
@@ -31,8 +31,6 @@ public class BunsRay : MonoBehaviour
 			isBurgerOntable = true;
 			return;
 		}
-		// Debug—p
-		//Debug.DrawRay(rayPos, -transform.up * maxDistance, Color.blue, 0.1f, false);
 		isBurgerOntable = false;
 	}
 

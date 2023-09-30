@@ -20,8 +20,6 @@ public class PlayerGrab : MonoBehaviour
 
 	void Update()
 	{
-		// RayCastデバッグ用
-		//Debug.DrawRay(mainCamera.transform.position, mainCamera.transform.forward * maxDistance, Color.red, 0.1f, false);
 		Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, maxDistance);
 
 		if (hit.collider != null && Input.GetMouseButtonDown(0) && 1 << hit.collider.gameObject.layer == hitLayers)
@@ -29,11 +27,11 @@ public class PlayerGrab : MonoBehaviour
 			isClick = true;
 		}
 		else if (Input.GetMouseButtonUp(0))
-        {
+		{
 			isClick = false;
 		}
 
-        if (isClick)
+		if (isClick)
 		{
 			if (grabItem == null)
 			{
@@ -49,5 +47,5 @@ public class PlayerGrab : MonoBehaviour
 		}
 
 		grabItem = null;
-    }
+	}
 }

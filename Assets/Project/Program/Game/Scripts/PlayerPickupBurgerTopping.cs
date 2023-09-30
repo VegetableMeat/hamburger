@@ -19,7 +19,7 @@ public class PlayerPickupBurgerTopping : MonoBehaviour
 	}
 
 	void Update()
-    {
+	{
 		Physics.Raycast(mainCamera.transform.position, mainCamera.transform.forward, out hit, maxDistance);
 
 		if (hit.collider != null && 1 << hit.collider.gameObject.layer == hitLayers && Input.GetMouseButtonDown(0))
