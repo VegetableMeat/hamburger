@@ -1,9 +1,10 @@
-using System;
-using UnityEditor.UIElements;
+using TMPro;
 using UnityEngine;
 
 public class MakeHamburger : MonoBehaviour
 {
+	[SerializeField] GameObject _BurgerNamePlatePrefab;
+	[SerializeField] GameObject[] _Bread;
 	[SerializeField] GameObject[] _Hamburger;
 	[SerializeField] GameObject[] _CheeseBurger;
 	string[] _Tags;
@@ -30,7 +31,8 @@ public class MakeHamburger : MonoBehaviour
 		Destroy(childObj.GetComponent<GrabItem>());
 		Destroy(childObj.GetComponent<Rigidbody>());
 
-		float burgerTopPos = parentObj.GetComponent<BoxCollider>().bounds.center.y + parentObj.GetComponent<BoxCollider>().bounds.size.y / 2;
+		float burgerTopPos = GetBurgerTopPos(parentObj);
+		GameObject _HamburgerParent = null;
 
 		if (parentObj.tag == "BunsUnder")
 		{
@@ -38,7 +40,7 @@ public class MakeHamburger : MonoBehaviour
 			Destroy(parentObj.GetComponent<BunsRay>());
 			Destroy(parentObj.GetComponent<GrabItem>());
 			Destroy(parentObj.GetComponent<Rigidbody>());
-			CreateBurgerParent(parentObj, childObj, burgerTopPos);
+			_HamburgerParent = CreateBurgerParent(parentObj, childObj, burgerTopPos);
 		}
 		else
 		{
@@ -46,7 +48,11 @@ public class MakeHamburger : MonoBehaviour
 		}
 
 
-		if (childObj.tag == "BunsTop")
+		if (parentObj.tag == "BunsUnder" && childObj.tag == "BunsTop")
+		{
+			FinishedBurger(_HamburgerParent);
+		}
+		else if (childObj.tag == "BunsTop")
 		{
 			FinishedBurger(parentObj);
 		}
@@ -55,7 +61,7 @@ public class MakeHamburger : MonoBehaviour
 	public void AddChildElement(GameObject parentObj, GameObject childObj, Vector3 childPos)
 	{
 		childObj.layer = LayerMask.NameToLayer("Default");
-		childObj.transform.parent = parentObj.transform.root;
+		childObj.transform.SetParent(parentObj.transform);
 		childObj.transform.position = childPos;
 		childObj.transform.rotation = parentObj.transform.rotation;
 
@@ -65,8 +71,9 @@ public class MakeHamburger : MonoBehaviour
 		parentObj.GetComponent<BoxCollider>().center = new Vector3(parentColliderCenter.x, parentColliderCenter.y + childObj.GetComponent<BoxCollider>().center.y, parentColliderCenter.z);
 	}
 
-	void CreateBurgerParent(GameObject parentObj, GameObject childObj, float burgerTopPos)
+	GameObject CreateBurgerParent(GameObject parentObj, GameObject childObj, float burgerTopPos)
 	{
+		// TODO: ƒvƒŒƒnƒu‰»
 		GameObject hamburger = new GameObject("Hamburger");
 		hamburger.name = "Hamburger";
 		hamburger.tag = "Maikingburger";
@@ -80,9 +87,11 @@ public class MakeHamburger : MonoBehaviour
 		hamburger.AddComponent<GrabItem>();
 		hamburger.AddComponent<BunsRay>();
 		hamburger.GetComponent<BunsRay>();
-		parentObj.transform.parent = hamburger.transform;
+		parentObj.transform.SetParent(hamburger.transform);
 
 		AddChildElement(hamburger, childObj, new Vector3(hamburger.transform.position.x, burgerTopPos, hamburger.transform.position.z));
+
+		return hamburger;
 	}
 
 	bool CheckCompleteTag(GameObject parentObj)
@@ -102,57 +111,82 @@ public class MakeHamburger : MonoBehaviour
 
 	void FinishedBurger(GameObject parentObj)
 	{
-		int childCount = parentObj.transform.childCount;
-		Transform allChild = parentObj.transform;
+		int toppingCount = parentObj.transform.childCount;
+		Transform toppings = parentObj.transform;
 
-		if (_Hamburger.Length == childCount) 
+		GameObject _BurgerNamePlate = DisplayBurgerName(parentObj);
+
+		if (_Bread.Length == toppingCount)
 		{
-			int trueOrfalse = 0;
-
-			foreach (Transform child in allChild)
+			if (CheckBurgerToppings(toppings, toppingCount, _Bread))
 			{
-				for (int i = 0; i < childCount; i++) 
-				{
-					if (_Hamburger[i].name != child.gameObject.name) 
-					{
-						continue;
-					}
-
-					trueOrfalse++;
-				}
-			}
-
-			if (trueOrfalse == childCount) 
-			{
-				parentObj.tag = _TagHamburger;
+				parentObj.tag = _TagUnhamburger;
+				_BurgerNamePlate.name = "Bread";
+				_BurgerNamePlate.GetComponent<TextMeshPro>().text = "Bread";
 				return;
 			}
 		}
 
-		if (_CheeseBurger.Length == childCount) 
+		if (_Hamburger.Length == toppingCount) 
 		{
-			int trueOrfalse = 0;
-
-			foreach (Transform child in allChild)
+			if (CheckBurgerToppings(toppings, toppingCount, _Hamburger))
 			{
-				for (int i = 0; i < childCount; i++)
-				{
-					if (_CheeseBurger[i].name != child.gameObject.name)
-					{
-						continue;
-					}
-
-					trueOrfalse++;
-				}
-			}
-
-			if (trueOrfalse == childCount)
-			{
-				parentObj.tag = _TagCheeseburger;
+				SetBurgerTagAndNamePlate(parentObj, _BurgerNamePlate, _TagHamburger);
 				return;
 			}
 		}
 
-		parentObj.tag = _TagUnhamburger;
+		if (_CheeseBurger.Length == toppingCount) 
+		{
+			if (CheckBurgerToppings(toppings, toppingCount, _CheeseBurger))
+			{
+				SetBurgerTagAndNamePlate(parentObj, _BurgerNamePlate, _TagCheeseburger);
+				return;
+			}
+		}
+
+		SetBurgerTagAndNamePlate(parentObj, _BurgerNamePlate, _TagUnhamburger);
+	}
+
+	GameObject DisplayBurgerName(GameObject parentObj)
+	{
+		float _BurgerTopPos = GetBurgerTopPos(parentObj) + 0.25f;
+
+		GameObject _BurgerNamePlate = Instantiate(_BurgerNamePlatePrefab, new Vector3(parentObj.transform.position.x, _BurgerTopPos, parentObj.transform.position.z), parentObj.transform.rotation);
+		_BurgerNamePlate.transform.SetParent(parentObj.transform);
+
+		return _BurgerNamePlate;
+	}
+
+	float GetBurgerTopPos(GameObject parentObj)
+	{
+		return parentObj.GetComponent<BoxCollider>().bounds.center.y + parentObj.GetComponent<BoxCollider>().bounds.size.y / 2;
+	}
+
+	bool CheckBurgerToppings(Transform toppings, int toppingCount, GameObject[] correctBurger)
+	{
+		int trueCount = 0;
+
+		foreach (Transform topping in toppings)
+		{
+			for (int i = 0; i < toppingCount; i++)
+			{
+				if (correctBurger[i].name != topping.gameObject.name)
+				{
+					continue;
+				}
+
+				trueCount++;
+			}
+		}
+
+		return trueCount == toppingCount;
+	}
+
+	void SetBurgerTagAndNamePlate(GameObject parentObj, GameObject burgerNamePlate, string tag)
+	{
+		parentObj.tag = tag;
+		burgerNamePlate.name = tag;
+		burgerNamePlate.GetComponent<TextMeshPro>().text = tag;
 	}
 }

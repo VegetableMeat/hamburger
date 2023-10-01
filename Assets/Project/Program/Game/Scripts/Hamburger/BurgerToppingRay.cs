@@ -10,7 +10,7 @@ public class BurgerToppingRay : MonoBehaviour
 	string _TagMaikingburger;
 	string _TagBunsUnder;
 	RaycastHit _Hit;
-	MakeHamburger _MakeHamScript;
+	MakeHamburger _MakeBurgerScript;
 
 	void Awake()
 	{
@@ -27,7 +27,7 @@ public class BurgerToppingRay : MonoBehaviour
 		_TagMaikingburger = "Maikingburger";
 		_TagBunsUnder = "BunsUnder";
 		_Tags = new string[] { _TagMaikingburger, _TagBunsUnder };
-		_MakeHamScript = GameObject.Find("GameManager").GetComponent<MakeHamburger>();
+		_MakeBurgerScript = GameObject.Find("GameManager").GetComponent<MakeHamburger>();
 	}
 
 	void Update()
@@ -49,7 +49,7 @@ public class BurgerToppingRay : MonoBehaviour
 			if (bunsScript.GetBurgerState())
 			{
 				gameObject.GetComponent<BurgerToppingRay>().enabled = false;
-				_MakeHamScript.RemakeTheHamburger(bunsScript.GetBurgerState(), hitObj, gameObject);
+				_MakeBurgerScript.RemakeTheHamburger(bunsScript.GetBurgerState(), hitObj, gameObject);
 			}
 		}
 	}
